@@ -1,0 +1,85 @@
+{
+  "dataset": "ETTh1",
+  "model": "TimesNet",
+  "method": "clean",
+  "seq_len": 96,
+  "pred_len": 96,
+  "runs_root": "runs",
+  "data": {
+    "split_protocol": "ratio_6_2_2",
+    "allow_history_from_previous_split": true
+  },
+  "timesnet": {
+    "label_len": 48,
+    "d_model": 16,
+    "d_ff": 32,
+    "e_layers": 2,
+    "top_k": 5,
+    "num_kernels": 6,
+    "dropout": 0.1,
+    "embed": "timeF"
+  },
+  "train": {
+    "epochs": 10,
+    "batch_size": 32,
+    "learning_rate": 0.0001,
+    "lradj": "type1",
+    "clean_loss": "mse",
+    "early_stopping_patience": 3,
+    "eval_batch_size": 32,
+    "device": "auto",
+    "deterministic": false
+  },
+  "attack": {
+    "target_channels": [
+      "OT"
+    ],
+    "target_channel_ratio": 0.1,
+    "pattern": {
+      "shape": "hump_backtime_cone",
+      "length": 53,
+      "amplitude": 1.0,
+      "baseline": 0.0,
+      "scale": "normalized"
+    },
+    "poison_ratio": 0.1,
+    "similar_ratio": 0.3,
+    "poison_channel_ratio": 0.3,
+    "exclude_target_from_poison_channels": false,
+    "trigger_total_len": 29,
+    "budget_protocol": "keep_total",
+    "interp_lambda": 1.0,
+    "trigger_update_every": 2,
+    "lag": {
+      "min_corr_len": 8
+    },
+    "gat": {
+      "hidden_dim": 64,
+      "heads": 4,
+      "epochs": 20,
+      "learning_rate": 0.001,
+      "batch_size": 256,
+      "self_loops": true,
+      "leaky_slope": 0.2
+    },
+    "model_loss_weights": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "trigger_loss_weights": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "loss_reduction": "sum",
+    "smooth_eps": 0.8,
+    "trigger_learning_rate": 0.01,
+    "trigger_passes_per_update": 1,
+    "trigger_batch_size": 32,
+    "state_selection": {
+      "clean_tolerance": 0.05
+    }
+  }
+}
